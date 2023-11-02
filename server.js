@@ -167,10 +167,10 @@ app.post("/form", upload.single("image"), (req, res) => {
 });
 
 app.get("/form", (req, res) => {
+  const userId = req.query.userId; // Change this to query.userId
   const fetchDataQuery =
-    "SELECT location, notes, link, rating, image_path, id FROM PLACES";
-
-  db.query(fetchDataQuery, (err, results) => {
+    "SELECT location, notes, link, rating, image_path, id, userId FROM PLACES WHERE userId = ?";
+  db.query(fetchDataQuery, [userId], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).json({error: "Server side error"});
@@ -185,7 +185,7 @@ app.get("/places/:id", (req, res) => {
   const placeId = req.params.id;
 
   const fetchPlaceQuery =
-    "SELECT location, notes, link, rating, image_path, id FROM PLACES WHERE id = ?";
+    "SELECT location, notes, link, rating, image_path, id FROM PLACES WHERE id = ? ";
 
   db.query(fetchPlaceQuery, [placeId], (err, results) => {
     if (err) {
