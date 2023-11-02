@@ -39,11 +39,11 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  port: 3306,
-  password: "password",
-  database: "signup",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port: process.env.DB_PORT,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB,
 });
 
 app.post("/register", (req, res) => {
