@@ -15,17 +15,16 @@ const jwtSecret = process.env.JWT_SECRET || "ngjisdbiugrewmsopg,merwposg";
 const PORT = process.env.PORT || 8081;
 const URL = process.env.URL || "http://localhost:5173";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./Images");
-  },
-  filename: (req, file, cb) => {
-    const uniqueFilename = `${uuidv4()}${path.extname(file.originalname)}`;
-    cb(null, uniqueFilename);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./Images/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + file.originalname);
+//   },
+// });
 
-const upload = multer({storage: storage});
+// const upload = multer({storage: storage});
 
 app.use(express.json());
 app.use(cookieParser());
@@ -84,7 +83,7 @@ app.post("/register", (req, res) => {
           const userId = insertResult.insertId;
 
           const token = jwt.sign({name, userId}, jwtSecret, {
-            expiresIn: "1d",
+            expiresIn: "1h",
           });
 
           res.cookie("token", token);
@@ -141,20 +140,20 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.post("/form", upload.single("image"), (req, res) => {
-  const {location, notes, link, rating, userId, uniqueFilename} = req.body;
-
+app.post("/form", (req, res) => {
+  const {location, notes, link, rating, userId, imagePath, cuisine} = req.body;
+  console.log(req.file);
   if (!location || !link || !rating) {
-    return res.status(400).json({error: "location is required"});
+    return res
+      .status(400)
+      .json({error: "Location, Link and Rating are required!"});
   }
 
-  const imagePath = `images/${uniqueFilename}`;
-
   const checkData =
-    "INSERT INTO PLACES (location, notes, link, rating, userId, image_path, create_time) VALUES (?, ?, ?, ?, ?, ?, NOW())";
+    "INSERT INTO PLACES (location, notes, link, rating, userId, image_path, cuisine, create_time) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
   db.query(
     checkData,
-    [location, notes, link, rating, userId, imagePath],
+    [location, notes, link, rating, userId, imagePath, cuisine],
     (insertErr, insertResult) => {
       if (insertErr) {
         console.error(insertErr);
@@ -167,9 +166,9 @@ app.post("/form", upload.single("image"), (req, res) => {
 });
 
 app.get("/form", (req, res) => {
-  const userId = req.query.userId; // Change this to query.userId
+  const userId = req.query.userId;
   const fetchDataQuery =
-    "SELECT location, notes, link, rating, image_path, id, userId FROM PLACES WHERE userId = ?";
+    "SELECT location, notes, link, rating, image_path, id, cuisine, userId FROM PLACES WHERE userId = ?";
   db.query(fetchDataQuery, [userId], (err, results) => {
     if (err) {
       console.error(err);
@@ -185,7 +184,7 @@ app.get("/places/:id", (req, res) => {
   const placeId = req.params.id;
 
   const fetchPlaceQuery =
-    "SELECT location, notes, link, rating, image_path, id FROM PLACES WHERE id = ? ";
+    "SELECT location, notes, link, rating, image_path, cuisine, id FROM PLACES WHERE id = ? ";
 
   db.query(fetchPlaceQuery, [placeId], (err, results) => {
     if (err) {
