@@ -4,9 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import {readFile} from "fs/promises";
+import fs from "fs";
 import "dotenv/config";
-import multer from "multer";
-import path from "path";
 
 const app = express();
 app.use(express.static("public"));
@@ -15,24 +15,13 @@ const jwtSecret = process.env.JWT_SECRET || "ngjisdbiugrewmsopg,merwposg";
 const PORT = process.env.PORT || 8081;
 const URL = process.env.URL || "http://localhost:5173";
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "./Images/");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + file.originalname);
-//   },
-// });
-
-// const upload = multer({storage: storage});
-
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(
   cors({
     origin: [URL],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true,
   })
 );
@@ -184,8 +173,7 @@ app.get("/places/:id", (req, res) => {
   const placeId = req.params.id;
 
   const fetchPlaceQuery =
-    "SELECT location, notes, link, rating, image_path, cuisine, id FROM PLACES WHERE id = ? ";
-
+    "SELECT location, notes, link, rating, image_path, cuisine, id FROM PLACES WHERE userId = ?";
   db.query(fetchPlaceQuery, [placeId], (err, results) => {
     if (err) {
       console.error(err);
@@ -200,6 +188,40 @@ app.get("/places/:id", (req, res) => {
 
     res.json({data: placeData});
   });
+});
+
+app.delete("/places/:id", (req, res) => {
+  const placeId = req.params.id;
+
+  const deleteQuery = "DELETE FROM PLACES WHERE id = ?";
+  db.query(deleteQuery, [placeId], (err, results) => {
+    if (err) {
+      return res.status(500).json({error: "cannot delete bc server"});
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).json({error: "Places not found"});
+    }
+    res.json({message: "deleted, good job "});
+  });
+});
+
+let cuisines = [];
+
+fs.readFile("cuisines.json", "utf8", (err, data) => {
+  if (!err) {
+    cuisines = JSON.parse(data);
+    cuisines.sort((a, b) => {
+      if (a.label < b.label) {
+        return -1;
+      }
+    });
+  } else {
+    return res.status(404).json({error: "Can't read file mate"});
+  }
+});
+
+app.get("/cuisines", (req, res) => {
+  res.json(cuisines);
 });
 
 app.listen(PORT, () => {
