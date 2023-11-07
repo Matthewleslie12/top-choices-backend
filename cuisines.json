@@ -1,36 +1,121 @@
 [
   {
-    "value": "italian",
+    "value": "italy",
     "label": "Italian",
     "image": "https://picsum.photos/200"
   },
-  {"value": "japanese", "label": "Japanese"},
-  {"value": "chinese", "label": "Chinese"},
-  {"value": "indian", "label": "Indian"},
-  {"value": "mexican", "label": "Mexican"},
-  {"value": "french", "label": "French"},
-  {"value": "thai", "label": "Thai"},
-  {"value": "greek", "label": "Greek"},
-  {"value": "korean", "label": "Korean"},
-  {"value": "spanish", "label": "Spanish"},
-  {"value": "vietnamese", "label": "Vietnamese"},
-  {"value": "mediterranean", "label": "Mediterranean"},
-  {"value": "middle eastern", "label": "Middle Eastern"},
-  {"value": "american", "label": "American"},
-  {"value": "german", "label": "German"},
-  {"value": "cuban", "label": "Cuban"},
-  {"value": "turkish", "label": "Turkish"},
-  {"value": "peruvian", "label": "Peruvian"},
-  {"value": "moroccan", "label": "Moroccan"},
-  {"value": "jamaican", "label": "Jamaican"},
-  {"value": "russian", "label": "Russian"},
-  {"value": "swedish", "label": "Swedish"},
-  {"value": "lebanese", "label": "Lebanese"},
-  {"value": "ethiopian", "label": "Ethiopian"},
-  {"value": "hawaiian", "label": "Hawaiian"},
-  {"value": "caribbean", "label": "Caribbean"},
-  {"value": "portuguese", "label": "Portuguese"},
-  {"value": "filipino", "label": "Filipino"},
-  {"value": "cambodian", "label": "Cambodian"},
-  {"value": "british", "label": "British"}
+  {
+    "value": "japan",
+    "label": "Japanese",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "china",
+    "label": "Chinese",
+    "image": "https://picsum.photos/200"
+  },
+  {"value": "india", "label": "Indian", "image": "https://picsum.photos/200"},
+  {
+    "value": "mexico",
+    "label": "Mexican",
+    "image": "https://picsum.photos/200"
+  },
+  {"value": "france", "label": "French", "image": "https://picsum.photos/200"},
+  {"value": "thai", "label": "Thai", "image": "https://picsum.photos/200"},
+  {"value": "greece", "label": "Greek", "image": "https://picsum.photos/200"},
+  {"value": "korea", "label": "Korean", "image": "https://picsum.photos/200"},
+  {
+    "value": "spain",
+    "label": "Spanish",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "vietnam",
+    "label": "Vietnamese",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "mediterranean",
+    "label": "Mediterranean",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "middle-east",
+    "label": "Middle Eastern",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "americ",
+    "label": "American",
+    "image": "https://images.unsplash.com/photo-1600891964751-dc0cc8611e47?q=80&w=2962&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  },
+  {"value": "germany", "label": "German", "image": "https://picsum.photos/200"},
+  {"value": "cuba", "label": "Cuban", "image": "https://picsum.photos/200"},
+  {
+    "value": "turkey",
+    "label": "Turkish",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "peru",
+    "label": "Peruvian",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "morocco",
+    "label": "Moroccan",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "jamaica",
+    "label": "Jamaican",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "russia",
+    "label": "Russian",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "sweden",
+    "label": "Swedish",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "lebanon",
+    "label": "Lebanese",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "ethiopia",
+    "label": "Ethiopian",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "hawaii",
+    "label": "Hawaiian",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "caribbean",
+    "label": "Caribbean",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "portugal",
+    "label": "Portuguese",
+    "image": "https://picsum.photos/200"
+  },
+
+  {
+    "value": "filipino",
+    "label": "Filipino",
+    "image": "https://picsum.photos/200"
+  },
+  {
+    "value": "cambodia",
+    "label": "Cambodian",
+    "image": "https://picsum.photos/200"
+  },
+  {"value": "british", "label": "British", "image": "https://picsum.photos/200"}
 ]

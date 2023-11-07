@@ -4,9 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import {readFile} from "fs/promises";
-import fs from "fs";
 import "dotenv/config";
+import {Storage} from "@google-cloud/storage";
 
 const app = express();
 app.use(express.static("public"));
@@ -25,6 +24,11 @@ app.use(
     credentials: true,
   })
 );
+
+const storage = new Storage({
+  keyFilename:
+    "./top-choices-404401-8d001f6e2d35.jsonServer/top-choices-404401-8d001f6e2d35.json",
+});
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -156,8 +160,14 @@ app.post("/form", (req, res) => {
 
 app.get("/form", (req, res) => {
   const userId = req.query.userId;
-  const fetchDataQuery =
-    "SELECT location, notes, link, rating, image_path, id, cuisine, userId FROM PLACES WHERE userId = ?";
+  const fetchDataQuery = `
+  SELECT 
+    p.location, p.notes, p.link, p.rating, p.image_path, p.id, p.cuisine, p.userId,
+    c.image_url AS cuisineImageUrl
+  FROM PLACES p
+  LEFT JOIN cuisines c ON p.cuisine = c.name
+  WHERE p.userId = ?
+`;
   db.query(fetchDataQuery, [userId], (err, results) => {
     if (err) {
       console.error(err);
@@ -205,23 +215,34 @@ app.delete("/places/:id", (req, res) => {
   });
 });
 
-let cuisines = [];
+app.get("/cuisines", (req, res) => {
+  const selectCuisinesQuery =
+    "SELECT name, image_url FROM cuisines ORDER BY name ASC";
+  console.log(selectCuisinesQuery);
 
-fs.readFile("cuisines.json", "utf8", (err, data) => {
-  if (!err) {
-    cuisines = JSON.parse(data);
-    cuisines.sort((a, b) => {
-      if (a.label < b.label) {
-        return -1;
-      }
-    });
-  } else {
-    return res.status(404).json({error: "Can't read file mate"});
-  }
+  db.query(selectCuisinesQuery, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({error: "Server side error"});
+    }
+
+    const cuisines = results;
+
+    res.json(cuisines);
+  });
 });
 
-app.get("/cuisines", (req, res) => {
-  res.json(cuisines);
+app.post("/create-cuisine", (req, res) => {
+  const {cuisineName} = req.body;
+  const customName = cuisineName.charAt(0).toUpperCase() + cuisineName.slice(1);
+  const insertCuisineQuery =
+    "INSERT INTO cuisines (name, create_time) VALUES (?, NOW())";
+  db.query(insertCuisineQuery, [customName], (err, results) => {
+    if (err) {
+      return res.status(500).json({error: "Server side error"});
+    }
+    res.json({Status: "Success"});
+  });
 });
 
 app.listen(PORT, () => {
