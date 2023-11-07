@@ -25,11 +25,6 @@ app.use(
   })
 );
 
-const storage = new Storage({
-  keyFilename:
-    "./top-choices-404401-8d001f6e2d35.jsonServer/top-choices-404401-8d001f6e2d35.json",
-});
-
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
